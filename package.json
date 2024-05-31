@@ -1,0 +1,23 @@
+{
+	"name": "todo",
+	"version": "1.0.0",
+	"description": "Discord Todo bot",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"discord-bot",
+		"discord",
+		"todo"
+	],
+	"author": "snakechickensoup",
+	"git": "https://github.com/snakechickensoup/discord-todo-bot.git",
+	"license": "ISC",
+	"dependencies": {
+		"discord.js": "^14.15.2"
+	},
+	"devDependencies": {
+		"eslint": "^9.3.0"
+	}
+}
