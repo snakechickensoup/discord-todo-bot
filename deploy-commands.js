@@ -1,5 +1,5 @@
 const { REST, Routes } = require("discord.js");
-const { clientId, guildId, token } = require("./config.json");
+const { clientId, token } = require("./config.json");
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -32,10 +32,9 @@ const rest = new REST().setToken(token);
 	try {
 		console.log(`refresh ${commands.length}commands`);
 
-		const data = await rest.put(
-			Routes.applicationGuildCommands(clientId, guildId),
-			{ body: commands }
-		);
+		const data = await rest.put(Routes.applicationCommands(clientId), {
+			body: commands,
+		});
 
 		console.log(`${data.length}개의 명령 로드 성공!`);
 	} catch (err) {
