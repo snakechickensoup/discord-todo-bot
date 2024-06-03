@@ -1,15 +1,15 @@
 module.exports = {
-  convertMarkdownText: (type, text) => {
-    if (type === 'message') {
-      return `
+	convertMarkdownText: (type, text) => {
+		if (type === "message") {
+			return `
       \`\`\`fix
 - ${text} \`\`\``;
-    }
+		}
 
-    if (type === 'date') {
-      return `
-      > # ${text}
+		if (type === "date") {
+			return `
+      >>> #      ${text}
       `;
-    }
-  },
+		}
+	},
 };
