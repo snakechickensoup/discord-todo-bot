@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("discord.js");
-const { channelId } = require("../../config.json");
 const { convertMarkdownText } = require("../../util");
+require("dotenv").config();
+const channelId = process.env.CHANNEL_ID;
 
 module.exports = {
 	cooldown: 5,
