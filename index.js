@@ -10,7 +10,10 @@ const client = new Client({
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.GuildMessageReactions,
 		GatewayIntentBits.GuildIntegrations,
+		GatewayIntentBits.MessageContent,
 	],
+	restRequestTimeout: 60000,
+	retryLimit: 5,
 });
 
 client.cooldowns = new Collection();

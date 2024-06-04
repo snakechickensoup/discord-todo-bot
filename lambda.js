@@ -1,5 +1,9 @@
 const { verifyKey } = require("discord-interactions");
-const { InteractionType, InteractionResponseType } = require("discord.js");
+const {
+	InteractionType,
+	InteractionResponseType,
+	CommandInteractionOptionResolver,
+} = require("discord.js");
 const client = require("./index");
 
 exports.handler = async (evt) => {
@@ -17,17 +21,53 @@ exports.handler = async (evt) => {
 		return { statusCode: 401, body: JSON.stringify({ error: "잘못됨" }) };
 	}
 
-	const body = JSON.parse(rawBody);
+	const interactionBody = JSON.parse(rawBody);
 
-	if (body.type === InteractionType.Ping) {
+	if (interactionBody.type === InteractionType.Ping) {
 		return {
 			statusCode: 200,
 			body: JSON.stringify({ type: InteractionResponseType.Pong }),
 		};
-	} else if (body.type === InteractionType.ApplicationCommand) {
-		// TODO : command 실행 x ㅠㅠ ...
-		const command = client.commands.get(body.data.name);
-		return await command.execute(body);
+	} else if (interactionBody.type === InteractionType.ApplicationCommand) {
+		// check ready
+		if (!client.isReady()) {
+			await new Promise((resolve) => {
+				client.once("ready", resolve);
+			});
+		}
+
+		// command execute
+		const command = client.commands.get(interactionBody.data.name);
+		// TODO : This interaction failed ㅠㅠ
+		if (command) {
+			try {
+				const interaction = {
+					client,
+					data: interactionBody.data,
+					channelId: interactionBody.channel_id,
+					options: new CommandInteractionOptionResolver(
+						client,
+						interactionBody.data.options
+					),
+					reply: async ({ content, ephemeral }) => {
+						return {
+							type: InteractionResponseType.ChannelMessageWithSource,
+							data: { content, flags: ephemeral ? 64 : undefined },
+						};
+					},
+				};
+
+				await command.execute(interaction);
+
+				// return 200...
+			} catch (err) {
+				console.error("커맨드 실행 에러", err);
+				return {
+					statusCode: 500,
+					body: "커맨드 실행 실패 🥹",
+				};
+			}
+		}
 	}
 
 	return {
