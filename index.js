@@ -4,11 +4,19 @@ const { Client, Collection, GatewayIntentBits } = require("discord.js");
 require("dotenv").config();
 const token = process.env.TOKEN;
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildMessageReactions,
+		GatewayIntentBits.GuildIntegrations,
+	],
+});
 
 client.cooldowns = new Collection();
 client.commands = new Collection();
 
+// commands
 const foldersPath = path.join(__dirname, "commands");
 const commandFolders = fs.readdirSync(foldersPath);
 
@@ -30,6 +38,7 @@ for (const folder of commandFolders) {
 	}
 }
 
+// events
 const eventsPath = path.join(__dirname, "events");
 const eventFiles = fs
 	.readdirSync(eventsPath)
@@ -45,4 +54,12 @@ for (const file of eventFiles) {
 	}
 }
 
-client.login(token);
+// login
+client
+	.login(token)
+	.then(() => {
+		console.log("Todolicious 로긘 완");
+	})
+	.catch(console.error);
+
+module.exports = client;
