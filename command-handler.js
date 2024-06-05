@@ -9,6 +9,17 @@ async function handleCommand(interactionBody, client) {
 		});
 	}
 
+	// check bot status
+	async function waitBot() {
+		while (client.ws.status) {
+			// 0이 아닌 경우 (bot이 완전히 준비되지 않은 경우)
+			console.log("잠시만 기다려주세요. 봇이 오프라인 상태입니다.");
+			await new Promise((resolve) => setTimeout(resolve, 3000));
+		}
+	}
+
+	await waitBot();
+
 	// command execute
 	const command = client.commands.get(interactionBody.data.name);
 	if (command) {
