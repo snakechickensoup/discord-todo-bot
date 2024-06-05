@@ -62,7 +62,7 @@ module.exports = {
 	async execute(interaction) {
 		const subCommand = interaction.options.getSubcommand();
 		const channelData = await interaction.client.channels.fetch(channelId);
-		const messages = await channelData.messages.fetch({ limit: 10 });
+		const messages = await channelData.messages.fetch({ limit: 30 });
 
 		const today = convertMarkdownText(
 			"date",
@@ -75,9 +75,14 @@ module.exports = {
 
 		// 아직 목록이 없을 경우
 		if (!todayList) {
-			await interaction.reply(
-				convertMarkdownText("message", "오늘의 할 일 목록을 먼저 생성해주세요")
-			);
+			const reply = {
+				content: convertMarkdownText(
+					"message",
+					"오늘의 할 일 목록을 먼저 생성해주세요"
+				),
+			};
+			await interaction.reply(reply);
+			return reply;
 		}
 
 		// 날짜 제외 목록만
@@ -89,9 +94,12 @@ module.exports = {
 			const id = Math.floor(todos.length / 2);
 			const addTodo = [date, ...todos, `\n📌 ${id}. ${todo}`].join("\n");
 			await todayList.edit(addTodo);
-			await interaction.reply(
-				convertMarkdownText("message", "할 일을 추가했습니다.")
-			);
+
+			const reply = {
+				content: convertMarkdownText("message", "할 일을 추가했습니다."),
+			};
+			await interaction.reply(reply);
+			return reply;
 		}
 
 		// 수정
@@ -108,9 +116,12 @@ module.exports = {
 				...todos.slice(targetIndex + 1),
 			];
 			await todayList.edit([date, ...editTodos].join("\n"));
-			await interaction.reply(
-				convertMarkdownText("message", `할 일#${id} 수정 완료`)
-			);
+
+			const reply = {
+				content: convertMarkdownText("message", `할 일#${id} 수정 완료`),
+			};
+			await interaction.reply();
+			return reply;
 		}
 
 		// check
@@ -128,9 +139,12 @@ module.exports = {
 				...todos.slice(targetIndex + 1),
 			];
 			await todayList.edit([date, ...editTodos].join("\n"));
-			await interaction.reply(
-				convertMarkdownText("message", `할 일#${id} 체크 완료`)
-			);
+
+			const reply = {
+				content: convertMarkdownText("message", `할 일#${id} 체크 완료`),
+			};
+			await interaction.reply(reply);
+			return reply;
 		}
 
 		// 삭제
@@ -151,9 +165,12 @@ module.exports = {
 			await todayList.edit(
 				[date, ...todos.slice(0, targetIndex), ...editItems].join("\n")
 			);
-			await interaction.reply(
-				convertMarkdownText("message", `할 일#${id} 삭제 완료`)
-			);
+
+			const reply = {
+				content: convertMarkdownText("message", `할 일#${id} 삭제 완료`),
+			};
+			await interaction.reply(reply);
+			return reply;
 		}
 	},
 };

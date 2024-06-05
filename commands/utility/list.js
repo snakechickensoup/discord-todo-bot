@@ -51,16 +51,23 @@ module.exports = {
 
 			// 이미 오늘 날짜의 할 일 목록을 만들었는지 확인
 			if (checkDate(today)) {
-				await interaction.reply(
-					convertMarkdownText("message", "이미 오늘의 목록을 생성했어요.")
-				);
-				return;
+				const reply = {
+					content: convertMarkdownText(
+						"message",
+						"이미 오늘의 목록을 생성했어요."
+					),
+				};
+				await interaction.reply(reply);
+				return reply;
 			}
 
 			await channelData.send(convertMarkdownText("date", today));
-			await interaction.reply(
-				convertMarkdownText("message", "오늘의 할 일 목록 생성")
-			);
+
+			const reply = {
+				content: convertMarkdownText("message", "오늘의 할 일 목록 생성"),
+			};
+			await interaction.reply(reply);
+			return reply;
 		}
 
 		// 삭제하기 -----
@@ -73,19 +80,24 @@ module.exports = {
 
 			if (deleteList) {
 				await deleteList.delete();
-				await interaction.reply(
-					convertMarkdownText(
+
+				const reply = {
+					content: convertMarkdownText(
 						"message",
 						`${date}의 할 일 목록이 삭제되었습니다.`
-					)
-				);
+					),
+				};
+				await interaction.reply(reply);
+				return reply;
 			} else {
-				await interaction.reply(
-					convertMarkdownText(
+				const reply = {
+					content: convertMarkdownText(
 						"message",
 						`${date}의 할 일 목록이 존재하지 않습니다.`
-					)
-				);
+					),
+				};
+				await interaction.reply(reply);
+				return reply;
 			}
 		}
 
@@ -98,14 +110,18 @@ module.exports = {
 			const viewList = checkDate(date);
 
 			if (viewList) {
-				await interaction.reply(viewList.content);
+				const reply = { content: viewList.content };
+				await interaction.reply(reply);
+				return reply;
 			} else {
-				await interaction.reply(
-					convertMarkdownText(
+				const reply = {
+					content: convertMarkdownText(
 						"message",
 						`${date}의 할 일 목록이 존재하지 않습니다.`
-					)
-				);
+					),
+				};
+				await interaction.reply(reply);
+				return reply;
 			}
 		}
 	},
