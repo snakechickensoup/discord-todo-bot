@@ -1,18 +1,19 @@
-const { verifyKey } = require("discord-interactions");
-const { InteractionType, InteractionResponseType } = require("discord.js");
-const client = require("./index");
-const { handleCommand } = require("./command-handler");
+import { verifyKey } from "discord-interactions";
+import { InteractionType, InteractionResponseType } from "discord.js";
+import client from "./index";
+import handleCommand from "./command-handler";
+import { APIGatewayProxyEvent } from "aws-lambda";
 
-exports.handler = async (evt) => {
-	const signature = evt.headers["x-signature-ed25519"];
-	const timestamp = evt.headers["x-signature-timestamp"];
-	const rawBody = evt.body;
+exports.handler = async (evt: APIGatewayProxyEvent) => {
+	const signature = evt.headers["x-signature-ed25519"] ?? "";
+	const timestamp = evt.headers["x-signature-timestamp"] ?? "";
+	const rawBody = evt.body ?? "";
 
 	const isValidRequest = verifyKey(
 		rawBody,
 		signature,
 		timestamp,
-		process.env.PUBLIC_KEY
+		process.env.PUBLIC_KEY || ""
 	);
 	if (!isValidRequest) {
 		return { statusCode: 401, body: JSON.stringify({ error: "잘못됨" }) };

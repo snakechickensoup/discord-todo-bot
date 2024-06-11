@@ -1,7 +1,9 @@
-const fs = require("fs");
-const path = require("path");
-const { Client, Collection, GatewayIntentBits } = require("discord.js");
-require("dotenv").config();
+import { Client, Collection, GatewayIntentBits } from "discord.js";
+import fs from "fs";
+import path from "path";
+import env from "dotenv";
+import { IClient } from "./types";
+env.config();
 const token = process.env.TOKEN;
 
 const client = new Client({
@@ -12,22 +14,20 @@ const client = new Client({
 		GatewayIntentBits.GuildIntegrations,
 		GatewayIntentBits.MessageContent,
 	],
-	restRequestTimeout: 60000,
-	retryLimit: 5,
-});
+}) as IClient;
 
 client.cooldowns = new Collection();
 client.commands = new Collection();
 
 // commands
-const foldersPath = path.join(__dirname, "commands");
-const commandFolders = fs.readdirSync(foldersPath);
+const foldersPath: string = path.join(__dirname, "commands");
+const commandFolders: string[] = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
 	const commandsPaths = path.join(foldersPath, folder);
 	const commandFiles = fs
 		.readdirSync(commandsPaths)
-		.filter((file) => file.endsWith(".js"));
+		.filter((file: string) => file.endsWith(".js"));
 
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPaths, file);
@@ -42,10 +42,10 @@ for (const folder of commandFolders) {
 }
 
 // events
-const eventsPath = path.join(__dirname, "events");
-const eventFiles = fs
+const eventsPath: string = path.join(__dirname, "events");
+const eventFiles: string[] = fs
 	.readdirSync(eventsPath)
-	.filter((file) => file.endsWith(".js"));
+	.filter((file: string) => file.endsWith(".js"));
 
 for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);
@@ -65,4 +65,4 @@ client
 	})
 	.catch(console.error);
 
-module.exports = client;
+export default client;

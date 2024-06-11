@@ -1,7 +1,8 @@
-const { InteractionResponseType } = require("discord-interactions");
-const { CommandInteractionOptionResolver } = require("discord.js");
+import { InteractionResponseType } from "discord-interactions";
+import { BaseInteraction, CommandInteractionOptionResolver } from "discord.js";
+import { IClient } from "./types";
 
-async function handleCommand(interactionBody, client) {
+async function handleCommand(interactionBody, client: IClient) {
 	// check ready
 	if (!client.isReady()) {
 		await new Promise((resolve) => {
@@ -51,4 +52,4 @@ async function handleCommand(interactionBody, client) {
 	};
 }
 
-module.exports = { handleCommand };
+export default handleCommand;
