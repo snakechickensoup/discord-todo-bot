@@ -3,7 +3,11 @@ import fs from "fs";
 import path from "path";
 import env from "dotenv";
 import { IClient } from "./types";
+import { fileURLToPath } from "url";
 env.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const token = process.env.TOKEN;
 
 const client = new Client({
@@ -31,7 +35,7 @@ for (const folder of commandFolders) {
 
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPaths, file);
-		const command = require(filePath);
+		const command = await import(filePath);
 
 		if ("data" in command && "execute" in command) {
 			client.commands.set(command.data.name, command);
@@ -49,7 +53,7 @@ const eventFiles: string[] = fs
 
 for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);
-	const event = require(filePath);
+	const event = await import(filePath);
 	if (event.once) {
 		client.once(event.name, (...args) => event.execute(...args));
 	} else {

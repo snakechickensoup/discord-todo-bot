@@ -1,7 +1,16 @@
-import { Client, Collection, CommandInteraction } from "discord.js";
+import { CacheType, Client, Collection, CommandInteraction } from "discord.js";
 
-// Client Type
-export interface IClient extends Client {
-	commands: Collection<string, (interaction: CommandInteraction) => void>;
+export type IClient = {
+	commands: Collection<
+		string,
+		{ execute: (interaction: IInteraction) => Promise<void> }
+	>;
 	cooldowns: Collection<string, number>;
+} & Client;
+
+export interface IInteraction extends CommandInteraction<CacheType> {
+	data: {
+		name: string;
+	};
+	channel_id: string;
 }
