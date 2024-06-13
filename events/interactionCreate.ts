@@ -1,9 +1,7 @@
-import { CommandInteraction } from "discord.js";
+const { CommandInteraction, Events, Collection } = require("discord.js");
 import { IInteraction } from "../types";
 
-const { Events, Collection } = require("discord.js");
-
-type Interaction = IInteraction & CommandInteraction & any;
+type Interaction = IInteraction & typeof CommandInteraction & any;
 
 module.exports = {
 	name: Events.InteractionCreate,
