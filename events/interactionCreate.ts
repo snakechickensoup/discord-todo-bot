@@ -1,8 +1,13 @@
+import { CommandInteraction } from "discord.js";
+import { IInteraction } from "../types";
+
 const { Events, Collection } = require("discord.js");
+
+type Interaction = IInteraction & CommandInteraction & any;
 
 module.exports = {
 	name: Events.InteractionCreate,
-	async execute(interaction) {
+	async execute(interaction: Interaction) {
 		if (!interaction.isChatInputCommand()) return;
 
 		const command = interaction.client.commands.get(interaction.commandName);
