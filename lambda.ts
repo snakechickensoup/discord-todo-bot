@@ -2,11 +2,12 @@ const { verifyKey } = require("discord-interactions");
 const { InteractionType, InteractionResponseType } = require("discord.js");
 const client = require("./index");
 const { handleCommand } = require("./command-handler");
+import { APIGatewayProxyEvent } from "aws-lambda";
 
-exports.handler = async (evt) => {
+exports.handler = async (evt: APIGatewayProxyEvent) => {
 	const signature = evt.headers["x-signature-ed25519"];
 	const timestamp = evt.headers["x-signature-timestamp"];
-	const rawBody = evt.body;
+	const rawBody = evt.body ?? "";
 
 	const isValidRequest = verifyKey(
 		rawBody,

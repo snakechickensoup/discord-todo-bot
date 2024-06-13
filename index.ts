@@ -1,3 +1,5 @@
+import { IClient } from "./types";
+
 const fs = require("fs");
 const path = require("path");
 const { Client, Collection, GatewayIntentBits } = require("discord.js");
@@ -14,7 +16,7 @@ const client = new Client({
 	],
 	restRequestTimeout: 60000,
 	retryLimit: 5,
-});
+}) as IClient;
 
 client.cooldowns = new Collection();
 client.commands = new Collection();
@@ -27,7 +29,7 @@ for (const folder of commandFolders) {
 	const commandsPaths = path.join(foldersPath, folder);
 	const commandFiles = fs
 		.readdirSync(commandsPaths)
-		.filter((file) => file.endsWith(".js"));
+		.filter((file: string) => file.endsWith(".js"));
 
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPaths, file);
@@ -45,7 +47,7 @@ for (const folder of commandFolders) {
 const eventsPath = path.join(__dirname, "events");
 const eventFiles = fs
 	.readdirSync(eventsPath)
-	.filter((file) => file.endsWith(".js"));
+	.filter((file: string) => file.endsWith(".js"));
 
 for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);

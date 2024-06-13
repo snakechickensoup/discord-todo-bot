@@ -1,5 +1,7 @@
+type MessageType = "message" | "date";
+
 module.exports = {
-	convertMarkdownText: (type, text) => {
+	convertMarkdownText: (type: MessageType, text: string) => {
 		if (type === "message") {
 			return `
       \`\`\`fix

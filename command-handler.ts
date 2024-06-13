@@ -1,7 +1,9 @@
-const { InteractionResponseType } = require("discord-interactions");
-const { CommandInteractionOptionResolver } = require("discord.js");
+import { CommandInteraction } from "discord.js";
+import { IClient, IInteraction } from "./types";
 
-async function handleCommand(interactionBody, client) {
+const { InteractionResponseType } = require("discord-interactions");
+
+async function handleCommand(interactionBody: IInteraction, client: IClient) {
 	// check ready
 	if (!client.isReady()) {
 		await new Promise((resolve) => {
@@ -14,22 +16,11 @@ async function handleCommand(interactionBody, client) {
 	if (command) {
 		try {
 			const interaction = {
-				client,
-				data: interactionBody.data,
-				channelId: interactionBody.channel_id,
-				options: new CommandInteractionOptionResolver(
-					client,
-					interactionBody.data.options
-				),
-				reply: async ({ content, ephemeral }) => {
-					return {
-						type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-						data: { content, flags: ephemeral ? 64 : undefined },
-					};
-				},
+				...interactionBody,
+				...CommandInteraction,
 			};
 
-			const response = await command.execute(interaction);
+			const response = await command.execute(interaction as any);
 
 			return {
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
