@@ -2,7 +2,6 @@
 	"name": "todo",
 	"version": "1.0.0",
 	"description": "Discord Todo bot",
-	"main": "index.js",
 	"scripts": {
 		"build": "rm -rf dist && tsc",
 		"start": "npm run build && npm run deploy && node dist/index.js",
@@ -16,7 +15,7 @@
 	],
 	"author": "snakechickensoup",
 	"git": "https://github.com/snakechickensoup/discord-todo-bot.git",
-	"license": "ISC",
+	"license": "MIT",
 	"dependencies": {
 		"discord-interactions": "^3.4.0",
 		"discord.js": "^14.15.2",
