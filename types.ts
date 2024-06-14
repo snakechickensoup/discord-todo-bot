@@ -1,4 +1,10 @@
-import { CacheType, Client, Collection, CommandInteraction } from "discord.js";
+import {
+	ButtonStyle,
+	CacheType,
+	Client,
+	Collection,
+	CommandInteraction,
+} from "discord.js";
 
 export type IClient = {
 	commands: Collection<
@@ -14,3 +20,9 @@ export interface IInteraction extends CommandInteraction<CacheType> {
 	};
 	channel_id: string;
 }
+
+export type ButtonType = {
+	customId: string;
+	label: string;
+	style: ButtonStyle;
+};
