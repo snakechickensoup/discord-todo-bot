@@ -1,9 +1,9 @@
 const { CommandInteraction } = require("discord.js");
-import { IClient, IInteraction } from "./types";
+import { IClient, Interaction } from "./types";
 
 const { InteractionResponseType } = require("discord-interactions");
 
-async function handleCommand(interactionBody: IInteraction, client: IClient) {
+async function handleCommand(interactionBody: Interaction, client: IClient) {
 	// check ready
 	if (!client.isReady()) {
 		await new Promise((resolve) => {

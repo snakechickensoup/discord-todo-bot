@@ -7,18 +7,11 @@ require("dotenv").config();
 const token = process.env.TOKEN;
 
 const client = new Client({
-	intents: [
-		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.GuildMessageReactions,
-		GatewayIntentBits.GuildIntegrations,
-		GatewayIntentBits.MessageContent,
-	],
+	intents: [GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 	restRequestTimeout: 60000,
 	retryLimit: 5,
 }) as IClient;
 
-client.cooldowns = new Collection();
 client.commands = new Collection();
 
 // commands
