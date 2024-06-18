@@ -1,13 +1,20 @@
 import { Interaction } from "../types";
 import { Events } from "discord.js";
 const buttonInteraction = require("../interactions/button");
+const modalSubmitInteraction = require("../interactions/modalSubmit");
 
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction: Interaction) {
 		if (interaction.isButton()) {
 			buttonInteraction.execute(interaction);
+			return;
 		}
+		if (interaction.isModalSubmit()) {
+			modalSubmitInteraction.execute(interaction);
+			return;
+		}
+
 		if (!interaction.isChatInputCommand()) return;
 
 		const command = interaction.client.commands.get(interaction.commandName);
